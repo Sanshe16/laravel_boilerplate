@@ -10,8 +10,11 @@ use Illuminate\Validation\UnauthorizedException;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\Exceptions\ThrottleRequestsException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Illuminate\Foundation\Http\Exceptions\MaintenanceModeException;
+use RuntimeException;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
@@ -51,19 +54,19 @@ trait ApiExceptionHandlerTrait
             $this->unprocessableResponse(['errors' => $exception->validator->getMessageBag()], __('Input validation failed. Please check your input and try again'));
         }
 
-        elseif ($exception instanceof NotFoundHttpException)
+        elseif ($exception instanceof NotFoundHttpException || $exception instanceof ModelNotFoundException)
         {
-            $this->notFoundResponse([], __('Resource not found. Please verify the URL and try again'));
-        }
-
-        elseif ($exception instanceof ModelNotFoundException)
-        {
-            $this->notFoundResponse([], 'Model "' . $exception->getModel() . '" not found');
+            $this->notFoundResponse([], __('The requested resource was not found'));
         }
 
         elseif ($exception instanceof BadMethodCallException)
         {
             $this->serverErrorResponse([], __('An unexpected error occurred. Please contact support for assistance'));
+        }
+
+        elseif ($exception instanceof ThrottleRequestsException)
+        {
+            $this->throttleRequestsResponse([], __('Too many Requests'));
         }
 
         else

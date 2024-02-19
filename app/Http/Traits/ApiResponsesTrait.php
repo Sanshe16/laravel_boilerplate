@@ -169,4 +169,16 @@ trait ApiResponsesTrait
     {
         return $this->errorResponse($data, $message, Response::HTTP_INTERNAL_SERVER_ERROR);
     }
+
+    /**
+     * Response with status code 500.
+     *
+     * @param  mixed  $data
+     * @param  string  $message
+     * @return JsonResponse
+     */
+    public function throttleRequestsResponse(mixed $data, string $message = ''): JsonResponse
+    {
+        return $this->errorResponse($data, $message, Response::HTTP_TOO_MANY_REQUESTS);
+    }
 }

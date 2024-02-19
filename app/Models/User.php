@@ -16,14 +16,13 @@ class User extends Authenticatable
 
     const INACTIVE = 1;
 
+    /**
+     * @var array
+     */
     const STATUS_ARR = [
         self::ACTIVE => 'Active',
         self::INACTIVE => 'InActive',
     ];
-
-    const THEME_DARK_MODE = 1;
-
-    const THEME_LIGHT_MODE = 0;
 
     protected $table = 'users';
 
@@ -79,8 +78,8 @@ class User extends Authenticatable
      * @var array
      */
     public static $messages = [
-        'first_name.required' => 'First name is reuired',
-        'last_name.required' => 'Last name is reuired',
+        'first_name.required' => 'First name is required',
+        'last_name.required' => 'Last name is required',
     ];
 
     /**
@@ -96,6 +95,32 @@ class User extends Authenticatable
         ];
     }
 
+    /**
+     * @var array
+     */
+    private array $defaultSelect = [
+        'id',
+        'email',
+        'first_name',
+        'last_name',
+        'created_at',
+        'updated_at',
+    ];
+
+    /**
+     * @var array
+     */
+    private array $allowedIncludes = [];
+
+    /**
+     * @var array
+     */
+    protected $fieldSearchable = [
+        'first_name',
+        'last_name',
+        'email',
+    ];
+
 
     /**
      * @return string
@@ -104,7 +129,6 @@ class User extends Authenticatable
     {
         return encrypt($this->id);
     }
-
 
     /**
      * @return string
