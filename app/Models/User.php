@@ -12,6 +12,12 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+    const SHOULD_VERIFY = 1;
+    const VERIFY_COLUMN = 'status';
+    const VERIFY_COLUMN_VALUES = [
+        'active', 'inactive'
+    ];
+
     const ACTIVE = 0;
 
     const INACTIVE = 1;
@@ -53,8 +59,7 @@ class User extends Authenticatable
      * @var array
      */
     public static $rules = [
-        'first_name' => 'required|string',
-        'last_name' => 'required|string',
+        'name' => 'required|string',
         'email' => 'required|email:filter|unique:users,email',
         'password' => 'nullable|same:password_confirmation|min:6',
     ];
@@ -78,8 +83,7 @@ class User extends Authenticatable
      * @var array
      */
     public static $messages = [
-        'first_name.required' => 'First name is required',
-        'last_name.required' => 'Last name is required',
+        'name.required' => 'Last name is required',
     ];
 
     /**
@@ -89,8 +93,7 @@ class User extends Authenticatable
     {
         return [
             'id' => $this->id,
-            'first_name' => $this->first_name ?? 'N/A',
-            'last_name' => $this->last_name ?? 'N/A',
+            'name' => $this->last_name ?? 'N/A',
             'email' => $this->email ?? 'N/A',
         ];
     }
@@ -101,8 +104,7 @@ class User extends Authenticatable
     private array $defaultSelect = [
         'id',
         'email',
-        'first_name',
-        'last_name',
+        'name',
         'created_at',
         'updated_at',
     ];
@@ -116,8 +118,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fieldSearchable = [
-        'first_name',
-        'last_name',
+        'name',
         'email',
     ];
 

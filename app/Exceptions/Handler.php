@@ -41,8 +41,6 @@ class Handler extends ExceptionHandler
                 showNotyf($exception->getMessage(), 'error');
                 // return redirect()->back();
             }
-
-            return parent::render($request, $exception);
         });
     }
 }

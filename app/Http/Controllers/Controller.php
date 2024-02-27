@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Traits\FlashTrait;
 use App\Http\Traits\ApiResponsesTrait;
-use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class Controller extends BaseController
 {
-    use AuthorizesRequests, ValidatesRequests, DispatchesJobs;
-    use ApiResponsesTrait;
+    use AuthorizesRequests, ValidatesRequests;
+    use ApiResponsesTrait, FlashTrait;
 
     /**
      * @var array

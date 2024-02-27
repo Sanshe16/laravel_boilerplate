@@ -69,9 +69,11 @@ if (!function_exists('generateKey'))
 
 if (!function_exists('showNotyf'))
 {
-    function showNotyf($message, $type = 'error', $x = 'center', $y = 'top')
+    function showNotyf($message, $type = 'error', $duration = 2000, $x = 'center', $y = 'top')
     {
         $return =  notyf()
+            ->duration($duration)
+            ->ripple(true)
             ->translate(config()->get('app.locale'))
             ->position('x', $x)
             ->position('y', $y);

@@ -12,6 +12,7 @@
         "laravel/telescope": "^4.17",
         "laravel/tinker": "^2.8",
         "opcodesio/log-viewer": "^3.4",
+        "php-flasher/flasher-laravel": "^1.15",
         "php-flasher/flasher-notyf-laravel": "^1.15"
     },
     "require-dev": {
