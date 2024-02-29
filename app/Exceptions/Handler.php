@@ -3,12 +3,16 @@
 namespace App\Exceptions;
 
 use Throwable;
+use App\Support\ExceptionFormat;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Traits\ApiResponsesTrait;
 use App\Exceptions\Traits\ApiExceptionHandlerTrait;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 
 class Handler extends ExceptionHandler
 {
-    use ApiExceptionHandlerTrait;
+    use ApiExceptionHandlerTrait, ApiResponsesTrait;
     /**
      * The list of the inputs that are never flashed to the session on validation exceptions.
      *
@@ -27,7 +31,6 @@ class Handler extends ExceptionHandler
     {
         $this->reportable(function (Throwable $exception)
         {
-            //
         });
 
         $this->renderable(function (Throwable $exception, $request)
@@ -40,7 +43,21 @@ class Handler extends ExceptionHandler
             {
                 showNotyf($exception->getMessage(), 'error');
                 // return redirect()->back();
+
+                if ($exception instanceof InvalidRoleException)
+                {
+                    if (Auth::check())
+                    {
+                        return redirect(route('login'))->with(Auth::logout());
+                    }
+                    else
+                    {
+                        return redirect(route('login'));
+                    }
+                }
             }
+
+            return parent::render($request, $exception);
         });
     }
 }

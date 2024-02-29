@@ -12,23 +12,12 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
-    const SHOULD_VERIFY = 1;
-    const VERIFY_COLUMN = 'status';
-    const VERIFY_COLUMN_VALUES = [
-        'active', 'inactive'
-    ];
+    const ROLE_ADMIN = 1;
+    const ROLE_USER = 2;
 
-    const ACTIVE = 0;
+    const ACTIVE = 'active';
+    const INACTIVE = 'inactive';
 
-    const INACTIVE = 1;
-
-    /**
-     * @var array
-     */
-    const STATUS_ARR = [
-        self::ACTIVE => 'Active',
-        self::INACTIVE => 'InActive',
-    ];
 
     protected $table = 'users';
 

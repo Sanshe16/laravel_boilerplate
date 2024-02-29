@@ -2,6 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+use App\Exceptions\InvalidRoleException;
+
 class HomeController extends Controller
 {
     /**
@@ -21,6 +25,21 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        // User role
+        $role = Auth::user()->role_id;
+
+        // Check user role
+        switch ($role->id)
+        {
+            case User::ROLE_ADMIN:
+                return redirect(route('admins.dashboard'));
+                break;
+            case User::ROLE_USER:
+                return redirect(route('users.dashboard'));
+                break;
+            default:
+                throw new InvalidRoleException();
+                break;
+        }
     }
 }

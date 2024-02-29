@@ -4,6 +4,7 @@ namespace App\Exceptions\Traits;
 
 use BadMethodCallException;
 use Illuminate\Database\QueryException;
+use App\Exceptions\InvalidRoleException;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Validation\UnauthorizedException;
@@ -13,8 +14,6 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Exceptions\ThrottleRequestsException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Illuminate\Foundation\Http\Exceptions\MaintenanceModeException;
-use RuntimeException;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
@@ -67,6 +66,13 @@ trait ApiExceptionHandlerTrait
         elseif ($exception instanceof ThrottleRequestsException)
         {
             $this->throttleRequestsResponse([], __('Too many Requests'));
+        }
+
+        elseif ($exception instanceof InvalidRoleException)
+        {
+            //delete user bearer token
+
+            $this->unauthorizedResponse([], $exception->getMessage());
         }
 
         else
